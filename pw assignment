@@ -1,0 +1,135 @@
+Feature Engineering-5Assignment Questions 
+Assignment 
+Q1. What is the difference between Ordinal Encoding and Label Encoding? Provide an example of when you  might choose one over the other. 
+Ordinal Encoding and Label Encoding are two techniques used in data preprocessing, particularly when dealing with categorical data in machine learning and data analysis. They are similar in that they both convert categorical values into numerical format, but they differ in their applications and use cases:
+Ordinal Encoding:
+Application: Ordinal encoding is used when there is an inherent order or ranking among the categorical values. In other words, it's suitable for ordinal categorical data, where the categories have a meaningful and logical order.
+Label Encoding:
+Application: Label encoding is used when there is no inherent order or ranking among the categorical values. It's suitable for nominal categorical data, where the categories are distinct and there's no meaningful order.
+
+
+Q2. Explain how Target Guided Ordinal Encoding works and provide an example of when you might use it in  a machine learning project.
+Target Guided Ordinal Encoding is a technique used to encode categorical variables into ordinal values based on their relationship with the target variable in a machine learning project. It assigns ordinal values to categories such that the encoded values capture the ordinal relationship between the categories as influenced by the target variable.
+Here's how Target Guided Ordinal Encoding typically works:
+Calculate the Mean or Median of the Target Variable for Each Category: For each unique category in the categorical variable, you calculate the mean (for regression problems) or median (for classification problems) of the target variable for the instances belonging to that category.
+Order the Categories Based on Target Mean/Median: You then order the categories based on the calculated mean or median values in ascending or descending order. This ordering represents the strength of the relationship between the categories and the target variable.
+Assign Ordinal Labels: Finally, you assign ordinal labels (integers) to the categories based on their order. Categories that have a higher mean/median value are assigned lower ordinal labels, and vice versa.
+Here's an example of when you might use Target Guided Ordinal Encoding in a machine learning project:
+Example: Loan Approval Prediction
+Suppose you're working on a loan approval prediction problem, and one of the features in your dataset is the "Credit Score Range" with categories like ["Poor," "Fair," "Good," "Excellent"]. You want to convert this categorical feature into a numerical format that captures its relationship with the loan approval status (target variable).
+In this case, you can use Target Guided Ordinal Encoding:
+Calculate the Mean or Median Loan Approval Status (e.g., 0 for denied and 1 for approved) for each "Credit Score Range." You might find that the mean approval status for these categories is [0.1, 0.3, 0.6, 0.8], indicating that applicants with higher credit scores are more likely to be approved.
+Order the "Credit Score Range" categories based on their mean approval status in descending order: ["Excellent," "Good," "Fair," "Poor"].
+Assign ordinal labels to the categories based on their order: ["Excellent" (1), "Good" (2), "Fair" (3), "Poor" (4)].
+
+Q3. Define covariance and explain why it is important in statistical analysis. How is covariance calculated? 
+Covariance is a statistical measure that quantifies the degree to which two random variables change together. In other words, it measures the joint variability of two variables. Specifically, covariance indicates whether an increase in one variable corresponds to an increase or decrease in another variable, or if there is no consistent relationship between them.
+Importance of Covariance in Statistical Analysis:
+Covariance is important in statistical analysis for several reasons:
+Relationship Assessment: Covariance helps analysts understand the relationship between two variables. A positive covariance indicates that the variables tend to increase together, while a negative covariance suggests that they tend to move in opposite directions. A covariance of zero implies no linear relationship.
+Risk and Portfolio Management: In finance, covariance is used to assess the relationship between the returns of different assets in a portfolio. A positive covariance between assets indicates that they tend to move together, which can increase portfolio risk. Conversely, a negative covariance can help diversify a portfolio and reduce risk.
+
+Q4. For a dataset with the following categorical variables: Color (red, green, blue), Size (small, medium,  large), and Material (wood, metal, plastic), perform label encoding using Python's scikit-learn library.  Show your code and explain the output. 
+from sklearn.preprocessing import LabelEncoder
+import pandas as pd
+data={'color':('red', 'green', 'blue'),
+     'size':('small','medium','large'),
+     'Material': ('wood', 'metal', 'plastic')}
+df=pd.DataFrame(data)
+label_encoder=LabelEncoder()
+df['encoded_colour']=label_encoder.fit_transform(df['color'])
+df['encoded_size']=label_encoder.fit_transform(df['size'])
+df['encoded_material']=label_encoder.fit_transform(df['Material'])
+
+print(df)
+
+Sure, let's perform label encoding for a dataset with three categorical variables: Color, Size, and Material using Python's scikit-learn library. I'll provide the code and explain the output:
+python
+Copy code
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+# Sample data
+data = {
+    'Color': ['red', 'green', 'blue', 'red', 'green'],
+    'Size': ['small', 'medium', 'large', 'medium', 'small'],
+    'Material': ['wood', 'metal', 'plastic', 'wood', 'plastic']
+}
+
+# Create a DataFrame
+df = pd.DataFrame(data)
+
+# Create a LabelEncoder instance
+label_encoder = LabelEncoder()
+
+# Perform label encoding for each categorical column
+df['Encoded_Color'] = label_encoder.fit_transform(df['Color'])
+df['Encoded_Size'] = label_encoder.fit_transform(df['Size'])
+df['Encoded_Material'] = label_encoder.fit_transform(df['Material'])
+
+# Display the DataFrame
+print(df)
+
+Output:
+scss
+Copy code
+  Color    Size Material  Encoded_Color  Encoded_Size  Encoded_Material
+0    red   small     wood              2            2                 2
+1  green  medium    metal              1            0                 0
+2   blue   large  plastic              0            1                 1
+3    red  medium     wood              2            0                 2
+4  green   small  plastic              1            2                 1
+
+Explanation:
+We start with a sample DataFrame df that contains three categorical columns: Color, Size, and Material.
+We create a LabelEncoder instance named label_encoder.
+We perform label encoding for each of the three categorical columns individually using the fit_transform method:
+Encoded_Color is created by encoding the 'Color' column.
+Encoded_Size is created by encoding the 'Size' column.
+Encoded_Material is created by encoding the 'Material' column.
+The resulting DataFrame contains the original categorical columns along with their corresponding encoded versions.
+The label encoding assigns a unique integer value to each unique category within each column. The mapping is arbitrary, and the specific integers assigned do not convey any ordinal or meaningful information. For example, in the 'Color' column, 'red' is encoded as 2, 'green' as 1, and 'blue' as 0. These integers are solely used to represent the categories numerically in a machine learning context.
+
+
+Q5. Calculate the covariance matrix for the following variables in a dataset: Age, Income, and Education  level. Interpret the results. 
+data1= {
+    'Age': [30, 35, 25, 40, 28],
+    'Income': [50000, 60000, 40000, 70000, 45000],
+    'Education Level': [12, 16, 10, 18, 14],}
+
+df=pd.DataFrame(data1)
+cov=df.cov()
+print(cov)
+
+Q6. You are working on a machine learning project with a dataset containing several categorical  variables, including 
+"Gender" (Male/Female), "Education Level" (High School/Bachelor's/Master's/PhD),  and "Employment Status" (Unemployed/Part-Time/Full-Time). Which encoding method would you use for  each variable, and why? 
+Gender (Binary Categorical Variable - Nominal):
+For a binary categorical variable like "Gender" (which has only two categories: Male and Female), you can use Label Encoding or create a binary column (dummy variable) using One-Hot Encoding.
+Label Encoding: Assign 0 to one category and 1 to the other (e.g., Male = 0, Female = 1). This can be suitable if your algorithm can handle ordinal encoding, and you want to maintain a single column.
+Education Level (Categorical Variable - Ordinal):
+"Education Level" is an ordinal categorical variable because it has a meaningful order (e.g., High School < Bachelor's < Master's < PhD). For ordinal categorical variables, you should use Ordinal Encoding.
+Ordinal Encoding: Assign numerical values to each category based on their logical order. For example, you can assign [1, 2, 3, 4] to ["High School", "Bachelor's", "Master's", "PhD"]. This encoding method preserves the ordinal relationship between education levels.
+Employment Status (Categorical Variable - Nominal):
+"Employment Status" is a nominal categorical variable because there's no inherent order among the categories (e.g., Unemployed, Part-Time, Full-Time). For nominal categorical variables, One-Hot Encoding is typically the preferred method.
+One-Hot Encoding: Create binary columns for each category, such as "IsUnemployed," "IsPartTime," and "IsFullTime." This method allows the algorithm to treat each employment status independently without introducing any ordinality.
+
+Q7. You are analyzing a dataset with two continuous variables, "Temperature" and "Humidity", and two  categorical variables, "Weather Condition" (Sunny/Cloudy/Rainy) and "Wind Direction" (North/South/ East/West). Calculate the covariance between each pair of variables and interpret the results. 
+
+data3 = {
+    'Temperature': [70, 75, 68, 72, 80],
+    'Humidity': [60, 55, 65, 58, 70],
+    'Weather_Condition': ['Sunny', 'Cloudy', 'Rainy', 'Sunny', 'Rainy'],
+    'Wind Direction': ['North', 'South', 'East', 'West', 'North'],
+}
+
+df=pd.DataFrame(data3)
+
+##cov between temp and humidity
+cov_temp_humidity=df['Temperature'].cov(df['Humidity'])
+
+
+
+print(f'cov between temperature and humidity =:{cov_temp_humidity}')
+
+Note:  Create your assignment in Jupyter notebook and upload it to GitHub & share that github repository  link through your dashboard. Make sure the repository is public.
+Data Science Masters 
